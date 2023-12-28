@@ -1,0 +1,13 @@
+# 缓存
+.vscode
+.vue
+target
+*.lock
+# 依赖
+vue/node_modules
+
+# 其他
+.md
+*.sql
+*.log
+*.db

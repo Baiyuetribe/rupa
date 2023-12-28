@@ -1,0 +1,9 @@
+# 设置每行的最大宽度为
+max_width = 160
+# 删除多余的尾随空格
+# 自动运行换行操作
+hard_tabs = true                #// 注释代码格式化缩进，空格转tab
+fn_params_layout = "Compressed" # 函数参数换行方式
+# 以下仅nightly版有效
+# unstable_features = true        # 允许使用实验性功能
+# imports_granularity = "Crate" # 合并导入

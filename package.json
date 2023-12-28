@@ -1,0 +1,9 @@
+{
+    "scripts": {
+        "dev": "cargo watch -q -w src -x check",
+        "pre": "cargo watch -q -w src -x run",
+        "build": "cargo build --release",
+        "upx": "EXE_NAME=rupa && rm -f $EXE_NAME && upx target/x86_64-unknown-linux-musl/release/$EXE_NAME && mv target/x86_64-unknown-linux-musl/release/$EXE_NAME $EXE_NAME && ls -lh $EXE_NAME",
+        "release": "RUSTFLAGS=\"-C linker=x86_64-linux-musl-gcc\" CC=x86_64-linux-musl-gcc cargo build --target x86_64-unknown-linux-musl --release && bun run upx"
+    }
+}
