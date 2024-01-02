@@ -116,3 +116,7 @@ pub fn check_password(plain_password: &str, hashed_password: &str) -> bool {
 		Err(_) => false,
 	}
 }
+
+pub fn get_uuid() -> String {
+	ulid::Ulid::new().to_string() // 26位
+}

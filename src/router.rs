@@ -3,7 +3,7 @@ use crate::db;
 use crate::handle;
 use axum::{
 	error_handling::HandleErrorLayer,
-	extract::DefaultBodyLimit,
+	extract::{DefaultBodyLimit, Path},
 	handler::HandlerWithoutStateExt, // 用于普通函数转server
 	http::{Method, StatusCode},
 	response::IntoResponse,
@@ -24,7 +24,7 @@ use tower_http::cors::{Any, CorsLayer};
 use tower_http::limit::RequestBodyLimitLayer;
 use tower_http::services::{ServeDir, ServeFile}; // 跨域
 
-async fn index() -> &'static str {
+async fn vip_index() -> &'static str {
 	"Hello, World!"
 }
 async fn handler_404() -> (StatusCode, &'static str) {
@@ -32,31 +32,34 @@ async fn handler_404() -> (StatusCode, &'static str) {
 }
 
 pub fn init() -> Router {
-	// you can convert handler function to service
 	async fn handle_404() -> (StatusCode, &'static str) {
 		(StatusCode::NOT_FOUND, "Not found")
 	}
-	// you can convert handler function to service
 	let service = handle_404.into_service();
 
-	// let static_dir = ServeDir::new(".vue").not_found_service(service);
 	let cors = CorsLayer::new()
-		// allow `GET` and `POST` when accessing the resource
 		.allow_methods([Method::GET, Method::POST, Method::OPTIONS])
-		// allow requests from any origin
 		.allow_headers(Any)
 		.allow_origin(Any); // 解决跨域问题
 
 	let app: Router = Router::new()
-		// .route("/foo", get(get_foo).post(post_foo))
-		// .nest("/", static_dir.clone())
-		// 文件服务器，绑定storage文件夹
-		.route("/api/demo", get(index)) // 获取文章列表
-		// .route("/api/upload", post(index)) // jwt拦截，然后上传文件
-		.nest("/api/v4", admin()) // 其余处理
+		.route("/", get(handle::vue::embed_vue)) // 前端静态资源
+		.route("/api/captcha", get(handle::user::make_chaptcha)) // 验证码
+		.route("/api/login", get(vip_index)) // 登录
+		// 管理入口
+		// .nest("/api/v2", admin())
+		.route("/api/v2/dashboard", get(vip_index)) // 仪表盘
+		.route("/api/v2/website", get(vip_index)) // 网站
+		.route("/api/v2/sql", get(vip_index)) // 数据库
+		.route("/api/v2/file", get(vip_index)) // 文件管理
+		.route("/api/v2/log", get(vip_index)) // 日志
+		.route("/api/v2/port", get(vip_index)) // 端口
+		.route("/api/v2/safe", get(vip_index)) // 安全
+		.route("/api/v2/app", get(vip_index)) // 应用
+		.route("/api/v2/monitor", get(vip_index)) // 监控
+		.route("/api/v2/cron", get(vip_index)) // 定时任务
+		.route("/api/v2/setting", get(vip_index)) // 面板设置
 		.fallback(handler_404) // 未定义的，返回404
-		// add a fallback service for handling routes to unknown paths
-		// Add middleware to all routes
 		.layer(
 			ServiceBuilder::new()
 				.layer(HandleErrorLayer::new(|error: BoxError| async move {
@@ -72,6 +75,5 @@ pub fn init() -> Router {
 				.into_inner(),
 		)
 		.layer(cors);
-	// with(db)放最后
 	app
 }

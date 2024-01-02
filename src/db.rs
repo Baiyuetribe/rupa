@@ -1,26 +1,27 @@
 use crate::model::*;
-use axum::http::header::CONNECTION;
 use sea_orm::sea_query::MySqlQueryBuilder;
 use sea_orm::{ConnectOptions, Database, DatabaseConnection, DbErr};
 use sea_orm::{QuerySelect, *};
 use std::time::Duration;
 
 pub async fn create_tables(db: &DbConn) {
-	create_table(db, like::Entity).await; // 点赞隶属数据统计
+	create_table(db, admin::Entity).await;
+	create_table(db, app::Entity).await;
+	create_table(db, cron::Entity).await;
+	create_table(db, log::Entity).await;
+	create_table(db, monitor::Entity).await;
+	create_table(db, setting::Entity).await;
+	create_table(db, web::Entity).await;
 }
 
 pub async fn init_db() -> DatabaseConnection {
 	let mut opt = ConnectOptions::new("sqlite://rupa.db?mode=rwc".to_owned()); // sqlite://path/to/db.sqlite?mode=rwc
-
-	let opt = opt
-		.max_connections(200)
+	opt.max_connections(200)
 		.min_connections(5)
 		.connect_timeout(Duration::from_secs(1))
 		.acquire_timeout(Duration::from_secs(8))
 		.idle_timeout(Duration::from_secs(8))
-		.max_lifetime(Duration::from_secs(8))
-		.sqlx_logging(true)
-		.sqlx_logging_level(log::LevelFilter::Info); // 原本调用log库实现的，用此库代替
+		.max_lifetime(Duration::from_secs(8));
 	let db = Database::connect(opt).await.expect("数据库连接失败");
 	create_tables(&db).await; // 对于ansyn必须要等待
 	log!("数据库初始化完毕");
@@ -38,10 +39,7 @@ where
 	let db_mysql = db.get_database_backend();
 	let schema = Schema::new(db_mysql);
 	let stmt = db_mysql.build(schema.create_table_from_entity(entity).if_not_exists()); // 仅创建，存在时则忽略，缺点是模型改变后无效
-																					// let sql = db_mysql.build(schema.alter_table_from_entity(entity));
-																					// log!("{:?}", stmt);
 	match db.execute(stmt).await {
-		// Ok(_) => log!("success Migrated {}", entity.table_name()),
 		Ok(_) => (),
 		Err(e) => log!("Error: {}", e),
 	}

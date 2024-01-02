@@ -4,16 +4,19 @@ use serde_default::serde_default;
 
 #[serde_default]
 #[derive(Clone, Default, Debug, PartialEq, Eq, DeriveEntityModel, Deserialize, Serialize)]
-#[sea_orm(table_name = "likes")] // 热门点赞量统计
+#[sea_orm(table_name = "apps")] // 应用汇总
 pub struct Model {
 	#[sea_orm(primary_key)]
 	#[serde(skip_deserializing)]
-	pub id: i64, //  键id == ?
-	pub pid: i64,     // 文章ID
-	pub num: i64,     // 点赞数量
-	pub created: i64, // 创建时间-- 用来删除过期数据等
+	pub id: i64, //
+	pub name: String, // app名称
+	pub icon: String, // 图标
+	pub info: String, // 应用描述
+	pub url: String,  // 应用地址如github
+	pub status: bool, // 状态
+	pub created: i64, // 创建时间
 }
-// 后面两个必须定义，否则报错DeriveEntityModel
+
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
 pub enum Relation {}
 

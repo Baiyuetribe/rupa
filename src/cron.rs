@@ -1,7 +1,8 @@
 use crate::config;
-use crate::handle::core;
 use crate::utils;
 use std::sync::Arc;
+
+// rust里没有cron，只能自己实现了，欢迎pr
 pub async fn init() {
 	// 浏览次数更新 - 每10秒更新一次
 	tokio::spawn(async move {
@@ -9,7 +10,7 @@ pub async fn init() {
 		loop {
 			interval.tick().await;
 			tokio::spawn(async move {
-				core::refresh_view().await;
+				// core::refresh_view().await;
 			});
 		}
 	});
