@@ -1,0 +1,39 @@
+name: BUG 提交
+description: 提交产品缺陷帮助我们更好的改进
+title: "[BUG]"
+labels: "BUG"
+body:
+  - type: markdown
+    id: environment
+    attributes:
+      value: "## 环境信息"
+  - type: input
+    id: version
+    validations:
+      required: true
+    attributes:
+      label: "RuPa 版本"
+      description: "letest"
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: "问题描述"
+      description: "简要描述您碰到的问题"
+    validations:
+      required: true
+  - type: textarea
+    id: how-happened
+    attributes:
+      label: "最小重现步骤"
+      description: "请描述最小复现步骤"
+    validations:
+      required: true
+  - type: textarea
+    id: expect
+    attributes:
+      label: "期望的正确结果"
+  - type: textarea
+    id: additional-information
+    attributes:
+      label: "附加信息"
+      description: "如果你还有其他需要提供的信息，可以在这里填写（可以提供截图、视频等）。"
