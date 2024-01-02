@@ -3,6 +3,7 @@
 .vue
 target
 *.lock
+bun.lockb
 # 依赖
 vue/node_modules
 
