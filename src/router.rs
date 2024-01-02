@@ -24,7 +24,7 @@ use tower_http::cors::{Any, CorsLayer};
 use tower_http::limit::RequestBodyLimitLayer;
 use tower_http::services::{ServeDir, ServeFile}; // 跨域
 
-async fn vip_index() -> &'static str {
+async fn wip_index() -> &'static str {
 	"Hello, World!"
 }
 async fn handler_404() -> (StatusCode, &'static str) {
@@ -43,22 +43,24 @@ pub fn init() -> Router {
 		.allow_origin(Any); // 解决跨域问题
 
 	let app: Router = Router::new()
-		.route("/", get(handle::vue::embed_vue)) // 前端静态资源
+		.route("/", get(handle::vue::index)) // 前端静态资源
+		.route("/favicon.ico", get(handle::vue::favicon)) // 图标
+		.route("/assets/:path", get(handle::vue::assets)) // 前端静态资源
 		.route("/api/captcha", get(handle::user::make_chaptcha)) // 验证码
-		.route("/api/login", get(vip_index)) // 登录
+		.route("/api/login", get(wip_index)) // 登录
 		// 管理入口
 		// .nest("/api/v2", admin())
-		.route("/api/v2/dashboard", get(vip_index)) // 仪表盘
-		.route("/api/v2/website", get(vip_index)) // 网站
-		.route("/api/v2/sql", get(vip_index)) // 数据库
-		.route("/api/v2/file", get(vip_index)) // 文件管理
-		.route("/api/v2/log", get(vip_index)) // 日志
-		.route("/api/v2/port", get(vip_index)) // 端口
-		.route("/api/v2/safe", get(vip_index)) // 安全
-		.route("/api/v2/app", get(vip_index)) // 应用
-		.route("/api/v2/monitor", get(vip_index)) // 监控
-		.route("/api/v2/cron", get(vip_index)) // 定时任务
-		.route("/api/v2/setting", get(vip_index)) // 面板设置
+		.route("/api/v2/dashboard", get(wip_index)) // 仪表盘
+		.route("/api/v2/website", get(wip_index)) // 网站
+		.route("/api/v2/sql", get(wip_index)) // 数据库
+		.route("/api/v2/file", get(wip_index)) // 文件管理
+		.route("/api/v2/log", get(wip_index)) // 日志
+		.route("/api/v2/port", get(wip_index)) // 端口
+		.route("/api/v2/safe", get(wip_index)) // 安全
+		.route("/api/v2/app", get(wip_index)) // 应用
+		.route("/api/v2/monitor", get(wip_index)) // 监控
+		.route("/api/v2/cron", get(wip_index)) // 定时任务
+		.route("/api/v2/setting", get(wip_index)) // 面板设置
 		.fallback(handler_404) // 未定义的，返回404
 		.layer(
 			ServiceBuilder::new()
