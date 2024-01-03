@@ -45,3 +45,16 @@ pub fn make_chaptcha() -> (String, String) {
 	CHAPTCHA_CACHE.set(uuid.clone(), res.value, 10 * 60); // 存档为10分钟
 	(uuid, res.base64_img)
 }
+pub fn check_chaptcha(uuid: &str, v: u32) -> bool {
+	if v > 40 || uuid.len() != 26 {
+		// 值为40以内
+		return false;
+	}
+	match CHAPTCHA_CACHE.get::<u32>(uuid) {
+		Some(v0) => {
+			CHAPTCHA_CACHE.remove(uuid);
+			v0 == v
+		}
+		None => false,
+	}
+}

@@ -4,7 +4,7 @@ use serde_default::serde_default;
 
 #[serde_default]
 #[derive(Clone, Default, Debug, PartialEq, Eq, DeriveEntityModel, Deserialize, Serialize)]
-#[sea_orm(table_name = "admins")] // 管理员
+#[sea_orm(table_name = "users")] // 管理员
 pub struct Model {
 	#[sea_orm(primary_key)]
 	#[serde(skip_deserializing)]

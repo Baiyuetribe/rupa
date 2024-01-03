@@ -23,17 +23,60 @@ use std::sync::Arc;
 // 获取验证码
 pub async fn make_chaptcha() -> impl IntoResponse {
 	let res = config::make_chaptcha();
-	Json(json!({"status":"success","uuid":res.0,"data":res.1,}))
+	Json(json!({"status":200,"uuid":res.0,"data":res.1,}))
 }
 
-// 获取已存在的项目cag，返回一个列表
-pub async fn get_cag(headers: HeaderMap) -> impl IntoResponse {
-	if !jwt::check_admin_jwt(&headers) {
-		return Json(json!({"status":400,"msg":"404"}));
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Claims {
+	pub exp: usize, // 必须，
+}
+
+#[serde_default]
+#[derive(Debug, Deserialize)]
+pub struct LoginInput {
+	name: String,     // 登录账号
+	password: String, // 登录账号
+	captcha: u32,     // 验证码
+	uuid: String,     // 验证码标识
+}
+// 登录
+pub async fn login(Json(input): Json<LoginInput>) -> impl IntoResponse {
+	if input.name.is_empty() || input.password.is_empty() {
+		return Json(json!({"status":400,"msg":"参数错误",}));
 	}
-	// let db = config::get_db().await;
-	// let datas = model::project::Entity::find().all(db).await.unwrap_or(Vec::new());
-	// // let datas = datas.iter().map(|x| x.tag.clone()).collect::<Vec<_>>();
-	// let datas = datas.iter().map(|x| &x.cag).collect::<Vec<_>>(); // 不变引用，相比clone无消耗，也无需额外处理
-	Json(json!({"status":200,"msg":"ok"}))
+	if !config::check_chaptcha(input.uuid.as_str(), input.captcha) {
+		return Json(json!({"status":300,"msg":"验证码错误",}));
+	}
+	// 查询用户
+	let db = config::get_db().await;
+	let user = model::user::Entity::find().one(db).await.unwrap_or(None);
+	let user = match user {
+		None => return Json(json!({"status":400,"msg":"用户不存在",})),
+		Some(user) => user,
+	};
+	if user.name != input.name || !utils::check_password(&input.password, &user.password) {
+		return Json(json!({"status":400,"msg":"账号或密码错误",}));
+	}
+	let exp = chrono::Utc::now() + chrono::Duration::hours(4); // 设置有效期为7天
+	let claims = Claims {
+		exp: exp.timestamp() as usize, // May 2033 as UTC timestamp
+	};
+	// Create the authorization token
+	let token = match jsonwebtoken::encode(
+		&jsonwebtoken::Header::default(),
+		&claims,
+		&jsonwebtoken::EncodingKey::from_secret(config::ADMIN_JWT_SECRET),
+	) {
+		Ok(v) => v,
+		Err(_) => {
+			return Json(json!({"status":400,"msg":"token生成失败",}));
+		}
+	};
+	return Json(json!({"status":200,"data":token}));
+}
+
+// 修改账号或密码登操作
+pub async fn auth() -> impl IntoResponse {
+	let res = config::make_chaptcha();
+	Json(json!({"status":200,"uuid":res.0,"data":res.1,}))
 }

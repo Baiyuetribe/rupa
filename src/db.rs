@@ -5,7 +5,7 @@ use sea_orm::{QuerySelect, *};
 use std::time::Duration;
 
 pub async fn create_tables(db: &DbConn) {
-	create_table(db, admin::Entity).await;
+	create_table(db, user::Entity).await;
 	create_table(db, app::Entity).await;
 	create_table(db, cron::Entity).await;
 	create_table(db, log::Entity).await;
