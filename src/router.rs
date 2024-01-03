@@ -51,6 +51,7 @@ pub fn init() -> Router {
 		// 管理入口
 		// .nest("/api/v2", admin())
 		.route("/api/v2/dashboard", get(wip_index)) // 仪表盘
+		.route("/api/v2/refresh_home", get(handle::home::refresh_home)) // 仪表实时刷新
 		.route("/api/v2/website", get(wip_index)) // 网站
 		.route("/api/v2/sql", get(wip_index)) // 数据库
 		.route("/api/v2/file", get(wip_index)) // 文件管理

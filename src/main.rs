@@ -10,6 +10,7 @@ mod handle; // 引入库--也就是子文件夹
 mod model; // 引入库--也就是子文件夹
 
 mod config;
+mod core; // 系统核心
 mod cron; // 定时任务
 mod db; // 数据库
 mod jwt;

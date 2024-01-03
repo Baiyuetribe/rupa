@@ -50,6 +50,7 @@ math_captcha = "0.1.1"
 serde_default = { git = "https://github.com/ctaoist/serde_default" } # 解决serde无法设置默认值的问题
 pulldown-cmark = "0.9.3"
 ulid = "1.1.0"
+sysinfo = "0.30.3"
 
 [lints.rust]
 #unsafe_code = "forbid"
