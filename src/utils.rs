@@ -105,16 +105,12 @@ pub fn is_file_exist(path: &str) -> bool {
 
 use bcrypt::{hash, verify, DEFAULT_COST};
 // bycpt加密
-pub fn hash_password(password: &str) -> Result<String, bcrypt::BcryptError> {
-	let hashed_password = hash(password, DEFAULT_COST)?;
-	Ok(hashed_password)
+pub fn hash_password(password: &str) -> String {
+	bcrypt::hash(password, bcrypt::DEFAULT_COST).unwrap_or(String::new())
 }
 // bycpt验证
 pub fn check_password(plain_password: &str, hashed_password: &str) -> bool {
-	match verify(plain_password, hashed_password) {
-		Ok(_) => true,
-		Err(_) => false,
-	}
+	bcrypt::verify(plain_password, hashed_password).unwrap_or(false)
 }
 
 pub fn get_uuid() -> String {

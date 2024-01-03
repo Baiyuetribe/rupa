@@ -75,8 +75,58 @@ pub async fn login(Json(input): Json<LoginInput>) -> impl IntoResponse {
 	return Json(json!({"status":200,"data":token}));
 }
 
-// 修改账号或密码登操作
-pub async fn auth() -> impl IntoResponse {
-	let res = config::make_chaptcha();
-	Json(json!({"status":200,"uuid":res.0,"data":res.1,}))
+#[serde_default]
+#[derive(Debug, Deserialize)]
+pub struct AuthInput {
+	method: String,   // 修改类型 -- account:账号，password:密码
+	name: String,     // 新账号
+	password: String, // 新密码
+}
+
+// 修改账号或密码登操作-- 需要method
+pub async fn auth(Json(input): Json<AuthInput>) -> impl IntoResponse {
+	match input.method.as_str() {
+		"account" => {
+			if input.name.is_empty() {
+				return Json(json!({"status":400,"msg":"账号不能为空",}));
+			}
+			let db = config::get_db().await;
+			let user = model::user::Entity::find().one(db).await.unwrap_or(None);
+			let user = match user {
+				None => return Json(json!({"status":400,"msg":"用户不存在",})),
+				Some(user) => user,
+			};
+			let mut sql_data: model::user::ActiveModel = user.into();
+			sql_data.name = Set(input.name.clone());
+			let res = sql_data.update(db).await;
+			if res.is_err() {
+				return Json(json!({"status":400,"msg":"账号修改失败",}));
+			}
+		}
+		"password" => {
+			if input.password.is_empty() {
+				return Json(json!({"status":400,"msg":"密码不能为空",}));
+			}
+			let db = config::get_db().await;
+			let user = model::user::Entity::find().one(db).await.unwrap_or(None);
+			let user = match user {
+				None => return Json(json!({"status":400,"msg":"用户不存在",})),
+				Some(user) => user,
+			};
+			let mut sql_data: model::user::ActiveModel = user.into();
+			let p = utils::hash_password(&input.password);
+			if p.is_empty() {
+				return Json(json!({"status":400,"msg":"密码加密失败",}));
+			}
+			sql_data.password = Set(p);
+			let res = sql_data.update(db).await;
+			if res.is_err() {
+				return Json(json!({"status":400,"msg":"密码修改失败",}));
+			}
+		}
+		_ => {
+			return Json(json!({"status":400,"msg":"未知方法",}));
+		}
+	}
+	Json(json!({"status":200,"msg":"修改成功",}))
 }
