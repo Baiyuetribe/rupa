@@ -116,3 +116,35 @@ pub fn check_password(plain_password: &str, hashed_password: &str) -> bool {
 pub fn get_uuid() -> String {
 	ulid::Ulid::new().to_string() // 26位
 }
+
+// 执行命令
+fn exec_spawn(cmd: &str) {
+	// 新建进程执行
+	std::process::Command::new("sh").arg("-c").arg(cmd).spawn();
+}
+
+fn exec_cmd(cmd: &str) {
+	// 当前进程阻塞执行
+	// let _ = std::process::Command::new("sh").arg("-c").arg(cmd).status(); // 有输出
+	// let _ = std::process::Command::new("sh")
+	// 	.arg("-c")
+	// 	.arg(cmd)
+	// 	.stdout(std::process::Stdio::null())
+	// 	.stderr(std::process::Stdio::null())
+	// 	.status(); // 静默执行
+	let (shell, argument): (&str, &str) = if cfg!(target_os = "windows") { ("cmd", "/C") } else { ("sh", "-c") }; // 跨平台
+	let _ = std::process::Command::new(shell)
+		.arg(argument)
+		.arg(cmd)
+		.stdout(std::process::Stdio::null())
+		.stderr(std::process::Stdio::null())
+		.status(); // 静默执行
+}
+
+fn exec_cmd_with_output(cmd: &str) -> String {
+	let (shell, argument): (&str, &str) = if cfg!(target_os = "windows") { ("cmd", "/C") } else { ("sh", "-c") };
+	match std::process::Command::new(shell).arg(argument).arg(cmd).output() {
+		Ok(output) => String::from_utf8_lossy(&output.stdout).into_owned(),
+		Err(_) => String::new(),
+	}
+}

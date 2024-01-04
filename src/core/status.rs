@@ -1,3 +1,5 @@
+use std::any::Any;
+
 use serde::{Deserialize, Serialize};
 use sysinfo::{Disks, Networks, System};
 
@@ -21,6 +23,9 @@ pub struct SystemData {
 	swap_memory_available: u64,
 	swap_memory_used: u64,
 	// 磁盘 - 待实现
+	total_space: u64,
+	available_space: u64,
+	disks: Vec<DiskInfo>,
 	// io_read_bytes: u64,
 	// io_write_bytes: u64,
 	// io_count: u64,
@@ -31,19 +36,15 @@ pub struct SystemData {
 	net_bytes_sent: u64,
 	net_bytes_recv: u64,
 }
-#[derive(Debug, Serialize, Deserialize)]
-pub struct DiskData {
-	path: String,
-	disk_type: String,
-	device: String,
-	total: u64,
-	free: u64,
-	used: u64,
-	inodes_total: u32,
-	inodes_used: u32,
-	inodes_free: u32,
-}
 
+#[derive(Debug, Serialize, Deserialize)]
+struct DiskInfo {
+	name: String,
+	available_space: u64,
+	total_space: u64,
+	file_system: String,
+	file_type: String,
+}
 pub fn get_system_data() -> SystemData {
 	let mut sys = sysinfo::System::new_all();
 	sys.refresh_all();
@@ -63,6 +64,27 @@ pub fn get_system_data() -> SystemData {
 	let swap_memory_available = sys.free_swap();
 	let swap_memory_used = sys.used_swap();
 	// 磁盘
+	let mut total_space = 0;
+	let mut available_space = 0;
+	let disks_all = Disks::new_with_refreshed_list();
+	// 总信息
+	disks_all.iter().for_each(|(v)| {
+		// 其他统计
+		total_space += v.total_space();
+		available_space += v.available_space();
+	});
+	// 磁盘列表
+	let disks = disks_all
+		.iter()
+		.map(|x| DiskInfo {
+			name: x.name().to_string_lossy().into_owned(),
+			available_space: x.available_space(),
+			total_space: x.total_space(),
+			file_system: x.file_system().to_string_lossy().into_owned(),
+			file_type: format!("{:?}", x.type_id()),
+		})
+		.collect::<Vec<_>>();
+
 	// let mut io_read_bytes = 0;
 	// let mut io_write_bytes = 0;
 	// let mut io_count = 0;
@@ -91,6 +113,9 @@ pub fn get_system_data() -> SystemData {
 		swap_memory_total,
 		swap_memory_available,
 		swap_memory_used,
+		total_space,
+		available_space,
+		disks,
 		// io_read_bytes,
 		// io_write_bytes,
 		// io_count,
