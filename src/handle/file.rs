@@ -30,11 +30,11 @@ pub struct DirInput {
 	path: String, // 路径
 }
 // 目录获取
-pub async fn get_dir(Json(input): Json(DirInput)) -> impl IntoResponse {
+pub async fn get_dir(Json(input): Json<DirInput>) -> impl IntoResponse {
 	if input.path.is_empty() {
 		return Json(json!({"status":400,"msg":"参数错误",}));
 	}
-	let data = utils::exec_cmd_with_output(format!("ls -lT {}", input.path).as_str()).await;
+	let data = utils::exec_cmd_with_output(format!("ls -lT {}", input.path).as_str());
 	Json(json!({"status":200,"data":data,}))
 }
 
@@ -58,12 +58,6 @@ pub async fn compress() -> impl IntoResponse {
 }
 
 // 修改文件或目录名称
-pub async fn rename() -> impl IntoResponse {
-	let data = core::status::get_system_data();
-	Json(json!({"status":200,"data":data,}))
-}
-
-// 删除文件或目录
 pub async fn rename() -> impl IntoResponse {
 	let data = core::status::get_system_data();
 	Json(json!({"status":200,"data":data,}))

@@ -54,7 +54,7 @@ pub fn init() -> Router {
 		.route("/api/v2/refresh_home", get(handle::home::refresh_home)) // 仪表实时刷新
 		.route("/api/v2/website", get(wip_index)) // 网站
 		.route("/api/v2/sql", get(wip_index)) // 数据库
-		.route("/api/v2/file", get(wip_index)) // 文件管理
+		.route("/api/v2/file", get(handle::file::get_dir)) // 文件管理
 		.route("/api/v2/log", get(wip_index)) // 日志
 		.route("/api/v2/port", get(wip_index)) // 端口
 		.route("/api/v2/safe", get(wip_index)) // 安全
