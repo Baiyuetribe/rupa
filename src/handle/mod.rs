@@ -1,3 +1,4 @@
+pub mod db;
 pub mod file; // 文件管理
 pub mod home; // 首页
 pub mod monitor;
