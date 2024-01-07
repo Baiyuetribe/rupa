@@ -37,22 +37,11 @@ export default defineConfig({
 		vue(),
 		DirResolverHelper(),
 		AutoImport({
-			dirs: ["./composables/**/*.ts", "./http/*.js"],
+			dirs: ["./composables/**/*.ts"],
 			dts: "./stores/auto-imports.d.ts",
 			injectAtEnd: false,
 			vueTemplate: true,
-			imports: [
-				"vue",
-				"pinia",
-				{
-					"vue-router": [
-						"createRouter",
-						"createWebHistory",
-						"useRouter",
-						"useRoute",
-					],
-				},
-			],
+			imports: ["vue", "vue-router", "pinia", "@vueuse/core"],
 		}),
 		Components({
 			dirs: ["components"], // 指定组件文件夹
