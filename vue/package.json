@@ -16,7 +16,7 @@
     "@vueuse/core": "^10.7.1",
     "animate.css": "^4.1.1",
     "mosha-vue-toastify": "^1.0.23",
-    "naive-ui": "^2.36.0",
+    "naive-ui": "^2.37.0",
     "nprogress": "^0.2.0",
     "pinia": "^2.1.7",
     "pug": "^3.0.2",
