@@ -30,8 +30,8 @@ const goRoute = (key, item) => {
       window.open(location.origin, 'top')
       break;
     case 'logout':
-      window.localStorage.removeItem('admin_token')
-      router.push('/auth')
+      window.localStorage.removeItem('rupa_token')
+      router.push('/login')
       break;
     default:
       router.push({ 'name': key })
@@ -50,47 +50,47 @@ const state = reactive({
     },
     {
       label: '网站',
-      key: 'card',
+      key: 'website',
       icon: renderIcon(CardOutline),
     },
     {
       label: '数据库',
-      key: 'msg',
+      key: 'db',
       icon: renderIcon(NotificationsOutline),
     },
     {
       label: '文件',
-      key: 'apikey',
+      key: 'folder',
       icon: renderIcon(ExtensionPuzzleOutline),
     },
     {
       label: '日志',
-      key: 'setting',
+      key: 'log',
       icon: renderIcon(SettingsOutline),
     },
     {
       label: '端口',
-      key: 'setting',
+      key: 'port',
       icon: renderIcon(SettingsOutline),
     },
     {
       label: '安全',
-      key: 'setting',
+      key: 'safe',
       icon: renderIcon(SettingsOutline),
     },
     {
       label: '应用',
-      key: 'setting',
+      key: 'app',
       icon: renderIcon(SettingsOutline),
     },
     {
       label: '监控',
-      key: 'setting',
+      key: 'monitor',
       icon: renderIcon(SettingsOutline),
     },
     {
       label: '计划任务',
-      key: 'setting',
+      key: 'cron',
       icon: renderIcon(SettingsOutline),
     },
     {

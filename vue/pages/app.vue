@@ -1,5 +1,5 @@
 <template lang="pug">
-.n-h2 空白index
+.n-h2 应用
 </template>
 
 <script setup>

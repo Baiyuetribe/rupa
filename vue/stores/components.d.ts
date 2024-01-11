@@ -9,6 +9,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     Footer: typeof import('./../components/Footer.vue')['default']
     Header: typeof import('./../components/Header.vue')['default']
+    NAlert: typeof import('naive-ui')['NAlert']
     NButton: typeof import('naive-ui')['NButton']
     NConfigProvider: typeof import('naive-ui')['NConfigProvider']
     NFlex: typeof import('naive-ui')['NFlex']

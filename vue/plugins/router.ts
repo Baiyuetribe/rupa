@@ -19,10 +19,10 @@ router.beforeEach(async (to, from, next) => {
 		next("/login");
 	}
 	// 判断是否登录
-	if (to.path == "/admin" || to.path == "/login") {
+	if (to.path == "/login") {
 		next();
 	} else {
-		if (localStorage.getItem("admin_token")) {
+		if (localStorage.getItem("rupa_token")) {
 			next();
 		} else {
 			next("/login");

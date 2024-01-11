@@ -25,7 +25,7 @@ use tower_http::limit::RequestBodyLimitLayer;
 use tower_http::services::{ServeDir, ServeFile}; // 跨域
 
 async fn wip_index() -> &'static str {
-	"Hello, World!"
+	"欢迎pr !"
 }
 async fn handler_404() -> (StatusCode, &'static str) {
 	(StatusCode::NOT_FOUND, "Not found")
@@ -47,7 +47,7 @@ pub fn init() -> Router {
 		.route("/favicon.ico", get(handle::vue::favicon)) // 图标
 		.route("/assets/:path", get(handle::vue::assets)) // 前端静态资源
 		.route("/api/captcha", get(handle::user::make_chaptcha)) // 验证码
-		.route("/api/login", get(wip_index)) // 登录
+		.route("/api/login", post(handle::user::login)) // 登录
 		// 管理入口
 		// .nest("/api/v2", admin())
 		.route("/api/v2/dashboard", get(wip_index)) // 仪表盘

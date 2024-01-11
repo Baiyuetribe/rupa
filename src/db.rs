@@ -1,4 +1,5 @@
-use crate::model::*;
+use crate::model::{self, *};
+use crate::utils;
 use sea_orm::sea_query::MySqlQueryBuilder;
 use sea_orm::{ConnectOptions, Database, DatabaseConnection, DbErr};
 use sea_orm::{QuerySelect, *};
@@ -24,6 +25,14 @@ pub async fn init_db() -> DatabaseConnection {
 		.max_lifetime(Duration::from_secs(8));
 	let db = Database::connect(opt).await.expect("数据库连接失败");
 	create_tables(&db).await; // 对于ansyn必须要等待
+	if model::user::Entity::find().one(&db).await.unwrap().is_none() {
+		let user = model::user::ActiveModel {
+			name: Set("admin".to_owned()),
+			password: Set(utils::hash_password("123456")),
+			..Default::default()
+		};
+		user.save(&db).await.unwrap(); // 创建管理员
+	}
 	log!("数据库初始化完毕");
 	return db;
 }
