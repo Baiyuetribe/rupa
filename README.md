@@ -1,6 +1,6 @@
 ## <p align="center"> RuPa </p>
 
-<p align="center">基于Rust+VUE3的Linux控制面板</p>
+<p align="center">基于Rust+VUE3的Linux控制面板 | <a href="http://8.134.174.107:3399">演示站</a></p>
 
 ![](./docs/img/rupa.jpg)
 
@@ -29,5 +29,6 @@
 
 ### 赞助商
 
-- [腾讯云](https://curl.qcloud.com/nNN41sxS)
+- [腾讯云(2H2G4M 118/年)](https://curl.qcloud.com/nNN41sxS)
+- [阿里云(2H2G3M 99/年)](https://www.aliyun.com/lowcode/promotion/allinaliyun/99program?source=5176.11533457&userCode=0dswifqr)
 - [小白兔 AI](https://xiaobaituai.com)

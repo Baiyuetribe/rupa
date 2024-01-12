@@ -1,0 +1,55 @@
+name: 自动化构建Docker镜像
+
+on: # 监听 main 分支上的 push 事件
+  push:
+    branches:
+      - main
+jobs:
+  push_to_registry:
+    name: 动态演示构建
+    runs-on: ubuntu-latest # 构建环境使用 ubuntu
+    steps:
+      - uses: actions/checkout@v2.3.2 # 将代码拉到虚拟机
+        name: 虚拟机代码clone
+        with:
+          fetch-depth: 1
+
+      - name: VUE构建 # 前端
+        run: |
+          cd vue
+          npm install
+          npm run build
+
+      - name: Rust构建 # 后端
+        run: |
+          npm run build
+
+      - name: 本机试运行 # 运行校验
+        run: |
+          # 启动后端
+          ./target/release/rupa        
+          sleep 1
+          # 使用curl检查web服务
+          if curl -s "http://127.0.0.1:3399/api/captcha" | grep 200 > /dev/null
+          then
+            echo "Web服务器运行正常"
+          else
+            echo "Web服务器运行异常"
+            exit 1
+          fi
+
+      - name: 远端推送 # 演示站接口
+        run: |
+          upx ./target/release/rupa #压缩一下
+          # 演示站部署
+          curl -X POST -H "Authorization: Bearer ${{ secrets.REMOTE_JWT }}" -F "file=@./target/release/rupa;type=application/octet-stream" http://8.134.174.107:3065/rupa_demo
+
+      # - name: SSH Remote deploy
+      #   uses: appleboy/ssh-action@master
+      #   with:
+      #     host: 8.134.174.107
+      #     username: ${{ secrets.REMOTE_USERNAME }}
+      #     password: ${{ secrets.REMOTE_PASSWORD }}
+      #     port: ${{ secrets.REMOTE_PORT }}
+      #     script: |
+      #       curl ..
