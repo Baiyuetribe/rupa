@@ -26,6 +26,7 @@ export default defineConfig({
 		emptyOutDir: true,
 	},
 	server: {
+		hmr: true, // 实时热更新开关
 		proxy: {
 			"/api": {
 				target: "http://127.0.0.1:3399",

@@ -1,4 +1,8 @@
-## <p align="center"> RuPa: A Rust panel for Linux management </p>
+## <p align="center"> RuPa </p>
+
+<p align="center">基于Rust+VUE3的Linux控制面板</p>
+
+![](./docs/img/rupa.jpg)
 
 ### 痛点
 
@@ -13,12 +17,17 @@
 ### 开发路线图
 
 - [✅]概念设计
-- [WIP]后端开发
-- [WIP]前端开发
-- []交互合并
-- []功能完善
+- [✅]后端开发
+- [✅]前端开发
+- [✅]交互合并
+- [WIP]功能完善
 - []发布
 
 ### 如何参与
 
 - 请先阅读 [开发者指南](/docs/贡献指南.md)
+
+### 赞助商
+
+- [腾讯云](https://curl.qcloud.com/nNN41sxS)
+- [小白兔 AI](https://xiaobaituai.com)

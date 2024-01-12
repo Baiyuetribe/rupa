@@ -1,32 +1,29 @@
 import { defineStore } from "pinia";
 import type { GlobalTheme, GlobalThemeOverrides } from "naive-ui";
-
-const useAppStore = defineStore("app", {
+import { darkTheme } from "naive-ui"; // 引入naive-ui的dark主题
+export const useAppStore = defineStore("app", {
 	state() {
 		return {
 			curTheme: null as GlobalTheme | null,
-			lightTheme: {
+			curThemeOverrides: null as GlobalThemeOverrides | null, // 定义全局自定义样式
+			lightThemeOverrides: {
 				common: {
-					baseColor: "#6851ff",
 					primaryColor: "#6851ff",
-					primaryColorSuppl: "#316c72",
-					primaryColorHover: "#316c72",
-					successColorHover: "#316c72",
-					successColorSuppl: "#316c72",
 				},
-				Layout: {
-					baseColor: "#316c72",
-					primaryColor: "#316c72",
-					primaryColorSuppl: "#316c72",
-					primaryColorHover: "#316c72",
-					successColorHover: "#316c72",
-					successColorSuppl: "#316c72",
-					siderColor: "#316c72",
-					color: "#316c72",
+				Layout: {},
+				Menu: {
+					fontSize: "1rem",
+					itemHeight: "3rem",
 				},
 			} as GlobalThemeOverrides,
-			darkTheme: {
-				common: {},
+			darkThemeOverrides: {
+				common: {
+					primaryColor: "#6851ff",
+				},
+				Menu: {
+					fontSize: "1rem",
+					itemHeight: "3rem",
+				},
 			} as GlobalThemeOverrides,
 		};
 	},
@@ -34,24 +31,39 @@ const useAppStore = defineStore("app", {
 		theme(): GlobalTheme | null {
 			return this.curTheme;
 		},
-		lightTheme(): GlobalThemeOverrides {
-			return this.lightTheme;
-		},
-		darkTheme(): GlobalThemeOverrides {
-			return this.darkTheme;
+		themeOverrides(): GlobalThemeOverrides {
+			return this.curThemeOverrides || this.lightThemeOverrides;
 		},
 	},
 	actions: {
 		setTheme(theme: GlobalTheme | null) {
 			this.curTheme = theme;
 		},
-		setLightTheme(theme: GlobalThemeOverrides) {
-			this.lightTheme = theme;
+		setThemeOverrides(theme: GlobalThemeOverrides) {
+			// 同步变更覆盖的主题
+			this.curThemeOverrides = theme;
 		},
-		setDarkTheme(theme: GlobalThemeOverrides) {
-			this.darkTheme = theme;
+		initTheme() {
+			// 初始话主题
+			let theme = window.matchMedia("(prefers-color-scheme: dark)").matches
+				? "dark"
+				: "light"; // 自动主题
+			if (theme === "dark") {
+				this.setTheme(darkTheme);
+				this.setThemeOverrides(this.darkThemeOverrides);
+			}
+		},
+		changeTheme() {
+			// 切换相反主题
+			if (this.curTheme === null) {
+				this.setTheme(darkTheme);
+				this.setThemeOverrides(this.darkThemeOverrides);
+			} else {
+				this.setTheme(null);
+				this.setThemeOverrides(this.lightThemeOverrides);
+			}
 		},
 	},
 });
 
-export default useAppStore;
+// export default useAppStore;

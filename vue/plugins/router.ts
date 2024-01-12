@@ -14,8 +14,8 @@ export const router = createRouter({
 // 路由守卫
 router.beforeEach(async (to, from, next) => {
 	document.title = "RuPa管理面板";
+	// next(); // 如果仅开发前端，可临时注释后面的
 	if (typeof to.name == "undefined") {
-		// console.log("未知路由");
 		next("/login");
 	}
 	// 判断是否登录
