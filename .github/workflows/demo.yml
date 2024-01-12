@@ -27,8 +27,8 @@ jobs:
       - name: 本机试运行 # 运行校验
         run: |
           # 启动后端
-          ./target/release/rupa        
-          sleep 1
+          nohup ./target/release/rupa &       
+          sleep 2
           # 使用curl检查web服务
           if curl -s "http://127.0.0.1:3399/api/captcha" | grep 200 > /dev/null
           then
