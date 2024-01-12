@@ -10,14 +10,14 @@ jobs:
     runs-on: ubuntu-latest # 构建环境使用 ubuntu
     steps:
       - uses: actions/checkout@v2.3.2 # 将代码拉到虚拟机
-        name: 虚拟机代码clone
+        name: 克隆代码
         with:
           fetch-depth: 1
 
       - name: VUE构建 # 前端
         run: |
           cd vue
-          npm install
+          npm install --legacy-peer-deps
           npm run build
 
       - name: Rust构建 # 后端
