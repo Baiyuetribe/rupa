@@ -9,6 +9,9 @@ export const useAppStore = defineStore("app", {
 			lightThemeOverrides: {
 				common: {
 					primaryColor: "#6851ff",
+					primaryColorHover: "#7e6bff",
+					primaryColorPressed: "#2605ff",
+					primaryColorSuppl: "#1800b7",
 				},
 				Layout: {},
 				Menu: {

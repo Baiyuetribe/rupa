@@ -2,8 +2,9 @@
 div(:id="id" ref="LineChartRef" style="width: 100%; height: 450px;")
 </template>
 <script lang="ts" setup>
-import { onMounted, nextTick, watch, onBeforeUnmount } from 'vue';
 import * as echarts from 'echarts';
+import { useAppStore } from '../stores/theme';
+const appStore = useAppStore();
 const props = defineProps({
     id: {
         type: String,

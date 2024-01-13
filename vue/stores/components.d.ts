@@ -30,6 +30,8 @@ declare module 'vue' {
     NMenu: typeof import('naive-ui')['NMenu']
     NNumberAnimation: typeof import('naive-ui')['NNumberAnimation']
     NP: typeof import('naive-ui')['NP']
+    NPopselect: typeof import('naive-ui')['NPopselect']
+    NResult: typeof import('naive-ui')['NResult']
     NSpace: typeof import('naive-ui')['NSpace']
     NText: typeof import('naive-ui')['NText']
     Pie: typeof import('./../components/Pie.vue')['default']

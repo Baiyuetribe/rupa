@@ -5,6 +5,7 @@ n-flex(justify="center" align="center" vertical)
 </template>
 <script lang="ts" setup>
 import * as echarts from 'echarts';
+const appStore = useAppStore();
 const props = defineProps({
     id: {
         type: String,
@@ -85,7 +86,7 @@ const initChart = () => {
                 backgroundStyle: {
                     color: 'rgba(0, 94, 235, 0.05)',
                 },
-                color: ['#8b5cf6'],
+                color: [appStore.themeOverrides.common?.primaryColorHover], // 色彩要求略浅
                 label: {
                     show: false,
                 },

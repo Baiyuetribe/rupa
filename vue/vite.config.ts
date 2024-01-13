@@ -38,7 +38,7 @@ export default defineConfig({
 		vue(),
 		DirResolverHelper(),
 		AutoImport({
-			dirs: ["./composables/**/*.ts"],
+			dirs: ["./composables/**/*.ts", "./stores/*.ts"],
 			dts: "./stores/auto-imports.d.ts",
 			injectAtEnd: false,
 			vueTemplate: true,

@@ -13,7 +13,6 @@ export const router = createRouter({
 });
 // 路由守卫
 router.beforeEach(async (to, from, next) => {
-	document.title = "RuPa管理面板";
 	// next(); // 如果仅开发前端，可临时注释后面的
 	if (typeof to.name == "undefined") {
 		next("/login");
@@ -23,7 +22,11 @@ router.beforeEach(async (to, from, next) => {
 		next();
 	} else {
 		if (localStorage.getItem("rupa_token")) {
-			next();
+			if (to.path == "/") {
+				next("/dashboard");
+			} else {
+				next();
+			}
 		} else {
 			next("/login");
 		}
