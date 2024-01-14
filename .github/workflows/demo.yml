@@ -28,7 +28,7 @@ jobs:
         run: |
           # 启动后端
           nohup ./target/release/rupa &       
-          sleep 2
+          sleep 1
           # 使用curl检查web服务
           if curl -s "http://127.0.0.1:3399/api/captcha" | grep 200 > /dev/null
           then
@@ -42,7 +42,7 @@ jobs:
         run: |
           upx ./target/release/rupa #压缩一下
           # 演示站部署
-          curl -X POST -H "Authorization: Bearer ${{ secrets.REMOTE_JWT }}" -F "file=@./target/release/rupa;type=application/octet-stream" http://8.134.174.107:3065/rupa_demo
+          curl -X POST -H "Authorization: Bearer ${{ secrets.REMOTE_JWT }}" -F "file=@./target/release/rupa;type=application/octet-stream" http://124.71.60.7:3065/rupa_demo
 
       # - name: SSH Remote deploy
       #   uses: appleboy/ssh-action@master

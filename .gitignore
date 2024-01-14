@@ -12,3 +12,7 @@ vue/node_modules
 *.sql
 *.log
 *.db
+
+# 二级制
+rupa
+rupa.exe
