@@ -16,7 +16,7 @@ n-layout(has-sider)
 <script setup>
 import { NIcon } from 'naive-ui'
 import {
-  BarChartOutline, TimeOutline, ServerOutline, EarthOutline, ShieldCheckmarkOutline, FolderOutline, AppsOutline, HardwareChipOutline, CardOutline, SettingsOutline, EaselOutline, ExtensionPuzzleOutline, LogOutOutline,
+  BarChartOutline, TimeOutline, ServerOutline, EarthOutline, ShieldCheckmarkOutline, FolderOutline, AppsOutline, HardwareChipOutline, NewspaperOutline, SettingsOutline, EaselOutline, ExtensionPuzzleOutline, LogOutOutline,
 } from '@vicons/ionicons5'
 const router = useRouter()
 
@@ -66,7 +66,7 @@ const state = reactive({
     {
       label: '日志',
       key: 'log',
-      icon: renderIcon(SettingsOutline),
+      icon: renderIcon(NewspaperOutline),
     },
     {
       label: '端口',

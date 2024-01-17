@@ -1,7 +1,11 @@
 <template lang="pug">
-n-result(status="404" title="404 资源不存在" description="期待您的创意")
-    template(#footer)
-        n-button(type="primary" @click="() => $router.push('/dashboard')") 返回首页
+n-card
+    n-h4(prefix="bar") 日志
+    n-tabs(animated)
+        n-tab-pane(name="0" tab="系统日志")
+            n-text 待定
+        n-tab-pane(name="1" tab="软件日志")
+            n-text 概念设计中
 </template>
 
 <script setup>
