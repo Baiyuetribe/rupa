@@ -24,7 +24,7 @@ n-grid(cols="4" item-responsive responsive="screen" x-gap="16" y-gap="4" style="
             .count
                 n-number-animation(:from="0" :to="123" show-separator)
                 .title 端口   
-.card
+n-card
     n-h4(prefix="bar") 状态
     n-flex(justify="space-evenly")
         Pie(id="load" percent='20' name="负载" footer='流畅运行')
@@ -37,7 +37,7 @@ n-grid(cols="4" item-responsive responsive="screen" x-gap="16" y-gap="4" style="
             n-text CPU信息： XXXX
             n-text 开机时间： 2023-05-16 12:00:11
             n-text 稳定运行 4545 天
-.card
+n-card
     //- 左侧为实时监控，右侧为CPU占用信息；前7个值
     n-h4(prefix="bar") 监控
     n-grid(cols="2" item-responsive responsive="screen" x-gap="16" y-gap="2")

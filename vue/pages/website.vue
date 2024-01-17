@@ -1,5 +1,5 @@
 <template lang="pug">
-.card
+n-card
     n-flex(justify="space-between" align="center")
         n-h4(prefix="bar") 网站
         n-button(type="primary" style="margin-bottom:1rem" @click="state.showAdd = true") 新增

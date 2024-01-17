@@ -41,24 +41,16 @@ background-color: transparent;
 
 a{
     text-decoration: none;
-    color: #52527b;
+    // color: #52527b;
 }
-.card{
-    background: #ffffffba;
+
+.n-card{
     border-radius: 1rem;
-    padding: 1rem;
     box-shadow: rgba(0, 0, 0, 0.03) 0px 4px 8px 0px;
-    // margin 1.5rem 1.5rem 3.5rem 1.5rem
     margin 1.5rem
-    /* transition: all 0.3s ease-in-out; */
+    width inherit
 }
-.card-title{
-    font-size: 22px;
-    border-left: 0.5rem solid #8b5cf6;
-    padding-left:8px;
-    color: #52527b;
-    line-height: 1.4;
-}
+
 .n-button{
     box-shadow: 0 2px 6px #b5b3b3;
 }
