@@ -10,7 +10,7 @@
   "exclude": ["node_modules", "dist"], // 忽略node_modules
   "include": [
     "./**/*.vue", // 必须要添加，添加后才对所有vue文件的组件进行代码提示!!
-    "./auto-imports.d.ts", // 所有函数组件、必须!!
-    "./components.d.ts", // 所有UI库组件，依赖--必须!!
+    "./store/auto-imports.d.ts", // 所有函数组件、必须!!
+    "./store/components.d.ts", // 所有UI库组件，依赖--必须!!
   ],    
 }
