@@ -4,7 +4,7 @@ n-result(status="404" title="404 资源不存在" description="期待您的创�
         n-button(type="primary" @click="() => $router.push('/dashboard')") 返回首页
 
     n-flex(justify="center")
-        n-text CC防护、以及类似fail2ban的设计
+        n-text CC防护、以及类似fail2ban的设计+进程守护
 </template>
 
 <script setup>
