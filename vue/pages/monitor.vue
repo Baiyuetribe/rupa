@@ -1,4 +1,15 @@
 <template lang="pug">
+n-card()
+    n-form(:inline="true" label-placement="left" style="margin-bottom:-1rem")
+        n-form-item(label="监控开关")
+            n-switch(value="true" :value="true") 开启
+        n-form-item(label="保存天数")
+            n-input-group
+                n-input(v-model:value="day") 30
+                n-button(type="primary" ghost) 修改
+        n-form-item(label="")
+            n-button(type="primary" ghost) 清空数据
+
 n-card
     n-h4(prefix="bar") 负载均衡
     Line(:option="data" id="load")
@@ -32,6 +43,7 @@ const data = ref({
     ],
     formatStr: 'KB/s',
 })
+const day = ref(30)
 </script>
     
 <style lang="stylus" scoped>
